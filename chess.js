@@ -4,8 +4,7 @@ let isLight = true;
 
 for (let column = 1; column <= 8; column++) {
   for (let row = 1; row <= 8; row++) {
-    squareName = String.fromCharCode(72 - (column - 1)) + row;
-    //const isLight = (row + column) % 2 === 0;
+    squareName = String.fromCharCode(65 + (row - 1)) + (9 - column);
 
     chessBoard.innerHTML += isLight
       ? "<div class='square light' data-square='" + squareName + "'>" + squareName + "</div>"
