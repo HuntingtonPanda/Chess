@@ -1,3 +1,5 @@
+import { selectPiece } from './gameplay.js';
+
 const chessBoard = document.querySelector('.chessBoard');
 let squareName;
 let isLight;
@@ -21,6 +23,7 @@ for (let column = 8; column >= 1; column--) {
 
     square.addEventListener('click', () => {
         console.log(`Clicked on ${square.getAttribute('data-square')}`);
+        selectPiece(square);
     });
 
     chessBoard.appendChild(square);

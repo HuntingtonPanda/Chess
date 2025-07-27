@@ -39,7 +39,7 @@ square.appendChild(createPiece('black', 'Queen'));
 
 //Black Pawn
 for(let i = 0; i < 8; i++){
-    file = String.fromCharCode(65 + i)
+    let file = String.fromCharCode(65 + i)
     square = document.querySelector(`[data-square="${file}7"]`);
     square.appendChild(createPiece('black', 'Pawn'));
 }
@@ -77,7 +77,7 @@ square.appendChild(createPiece('white', 'Queen'));
 
 //White Pawn
 for(let i = 0; i < 8; i++){
-    file = String.fromCharCode(65 + i)
+    let file = String.fromCharCode(65 + i)
     square = document.querySelector(`[data-square="${file}2"]`);
     square.appendChild(createPiece('white', 'Pawn'));
 }
