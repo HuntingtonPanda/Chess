@@ -34,12 +34,12 @@ function possibleMoveCalc(rank, file){
 
   // Rook
   if (pieceType === 'R') {
-  const target = document.querySelector(`[data-square="${indexToAlgebraic(rank - 1, file)}"]`);
+    console.log("rook selected");
+    const target = document.querySelector('[data-square=H3]');
     if (target) {
-      target.classList.add('possibleMove');
+      target.classList.add("possibleMove");
       possibleMoves.push(target);
     }
-  // SO BROKEN
   }
 }
 
@@ -51,8 +51,9 @@ function selectPiece(square){
   selectedPiece = square;
   selectedPiece.classList.add('selectedPiece');
 
-  const squareName = selectedPiece.getAttribute('data-square')
-  possibleMoveCalc(algebraicToIndex(squareName));
+  const squareName = selectedPiece.getAttribute('data-square');
+  const [rank, file] = algebraicToIndex(squareName);
+  possibleMoveCalc(rank, file);
 }
 
 export { selectPiece };
