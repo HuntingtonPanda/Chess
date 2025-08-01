@@ -1,3 +1,5 @@
+const boardRankSize = 8;
+const boardFileSize = 8;
 const board = [
   ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],  // row 0 (rank 8)
   ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
@@ -24,58 +26,32 @@ function indexToAlgebraic(row, col) {
 /* -------------- HANDLING MOVES HERE ------------*/
 let possibleMoves = [];
 
+function deltaMove(rank, file, deltaRank, deltaFile, continuous){
+  let r = rank;
+  let f = file;
+  do{
+    r += deltaRank;
+    f += deltaFile;
+    
+    if(r < 0 || r >= boardRankSize || f < 0 || f >= boardFileSize) //within border of board
+      break;
+    
+    const target = document.querySelector(`[data-square="${indexToAlgebraic(r, f)}"]`);
+    
+    if (target) {
+      target.classList.add('possibleMove');
+      possibleMoves.push(target);
+    }
+
+    if (board[r][f]) break; //Stop if piece something intercepting its path
+  }while(continuous)
+}
+
 function possibleRookMove(rank, file){
-  let target = null;
-  let possibleSquare = null;
+  const continuous = true;
+  const deltaRookMove = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 
-  let walker = 1;
-  do {
-    target = indexToAlgebraic(rank, file + walker);
-    possibleSquare = document.querySelector(`[data-square=${target}]`);
-    if (possibleSquare){
-      //console.log("HI");
-      possibleSquare.classList.add("possibleMove");
-      possibleMoves.push(possibleSquare);
-    }
-    walker++;
-  } while (possibleSquare);
-  
-  walker = -1;
-  do {
-    target = indexToAlgebraic(rank, file + walker);
-    possibleSquare = document.querySelector(`[data-square=${target}]`);
-    if (possibleSquare){
-      //console.log("HI");
-      possibleSquare.classList.add("possibleMove");
-      possibleMoves.push(possibleSquare);
-    }
-    walker--;
-  } while (possibleSquare);
-
-  // walker = 1;
-  // do {
-  //   target = indexToAlgebraic(rank + walker, file);
-  //   console.log(target);
-  //   possibleSquare = document.querySelector(`[data-square=${target}]`);
-  //   if (possibleSquare){
-  //     console.log("HI");
-  //     possibleSquare.classList.add("possibleMove");
-  //     possibleMoves.push(possibleSquare);
-  //   }
-  //   walker++;
-  // } while (possibleSquare);
-
-  // walker = -1;
-  // do {
-  //   target = indexToAlgebraic(rank - walker, file);
-  //   possibleSquare = document.querySelector(`[data-square=${target}]`);
-  //   if (possibleSquare){
-  //     //console.log("HI");
-  //     possibleSquare.classList.add("possibleMove");
-  //     possibleMoves.push(possibleSquare);
-  //   }
-  //   walker--;
-  // } while (possibleSquare);
+  deltaRookMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
 }
 
 function possibleMoveCalc(rank, file){
