@@ -1,7 +1,7 @@
 const boardRankSize = 8;
 const boardFileSize = 8;
 const board = [
-  ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],  // row 0 (rank 8)
+  ['bR', 'bN', 'bB', 'bK', 'bQ', 'bB', 'bN', 'bR'],  // row 0 (rank 8)
   //['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
@@ -9,7 +9,7 @@ const board = [
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   ['wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP'],
-  ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']
+  ['wR', 'wN', 'wB', 'wK', 'wQ', 'wB', 'wN', 'wR']
 ];
 
 function algebraicToIndex(squareName) {
@@ -70,10 +70,22 @@ function possibleBishopMove(rank, file){
   deltaBishopMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
 }
 
+function possibleKingMove(rank, file){
+  const continuous = false;
+  const deltaKingMove = [
+    [-1, -1], [0, -1], [1, -1],
+    [-1, 0], [1, 0],
+    [-1, 1], [0, 1], [1, 1]
+  ];
+
+  deltaKingMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+}
+
 const PIECESMOVE = {
   'R': possibleRookMove,
   'N': possibleKnightMove,
-  'B': possibleBishopMove
+  'B': possibleBishopMove,
+  'K': possibleKingMove 
 }
 
 function possibleMoveCalc(rank, file){
