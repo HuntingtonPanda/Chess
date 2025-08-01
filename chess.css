@@ -32,7 +32,8 @@
 }
 
 .possibleMove{
-  filter: brightness(1.4);
+  /*filter: brightness(1.4); */
+  box-shadow: inset 0 0 0 7px rgba(255, 255, 0, 0.8);
 }
 
 .possibleTake{

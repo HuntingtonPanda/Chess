@@ -21,7 +21,63 @@ function indexToAlgebraic(row, col) {
   return file + rank;
 }
 
+/* -------------- HANDLING MOVES HERE ------------*/
 let possibleMoves = [];
+
+function possibleRookMove(rank, file){
+  let target = null;
+  let possibleSquare = null;
+
+  let walker = 1;
+  do {
+    target = indexToAlgebraic(rank, file + walker);
+    possibleSquare = document.querySelector(`[data-square=${target}]`);
+    if (possibleSquare){
+      //console.log("HI");
+      possibleSquare.classList.add("possibleMove");
+      possibleMoves.push(possibleSquare);
+    }
+    walker++;
+  } while (possibleSquare);
+  
+  walker = -1;
+  do {
+    target = indexToAlgebraic(rank, file + walker);
+    possibleSquare = document.querySelector(`[data-square=${target}]`);
+    if (possibleSquare){
+      //console.log("HI");
+      possibleSquare.classList.add("possibleMove");
+      possibleMoves.push(possibleSquare);
+    }
+    walker--;
+  } while (possibleSquare);
+
+  // walker = 1;
+  // do {
+  //   target = indexToAlgebraic(rank + walker, file);
+  //   console.log(target);
+  //   possibleSquare = document.querySelector(`[data-square=${target}]`);
+  //   if (possibleSquare){
+  //     console.log("HI");
+  //     possibleSquare.classList.add("possibleMove");
+  //     possibleMoves.push(possibleSquare);
+  //   }
+  //   walker++;
+  // } while (possibleSquare);
+
+  // walker = -1;
+  // do {
+  //   target = indexToAlgebraic(rank - walker, file);
+  //   possibleSquare = document.querySelector(`[data-square=${target}]`);
+  //   if (possibleSquare){
+  //     //console.log("HI");
+  //     possibleSquare.classList.add("possibleMove");
+  //     possibleMoves.push(possibleSquare);
+  //   }
+  //   walker--;
+  // } while (possibleSquare);
+}
+
 function possibleMoveCalc(rank, file){
   while(possibleMoves.length > 0){
     possibleMoves.pop().classList.remove('possibleMove');
@@ -35,11 +91,12 @@ function possibleMoveCalc(rank, file){
   // Rook
   if (pieceType === 'R') {
     console.log("rook selected");
-    const target = document.querySelector('[data-square=H3]');
-    if (target) {
-      target.classList.add("possibleMove");
-      possibleMoves.push(target);
-    }
+    // let target = document.querySelector('[data-square=H3]');
+    // if (target) {
+    //   target.classList.add("possibleMove");
+    //   possibleMoves.push(target);
+    // }
+    possibleRookMove(rank, file);
   }
 }
 
