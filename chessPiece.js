@@ -20,14 +20,14 @@ square = document.querySelector('[data-square="B8"]');
 square.appendChild(createPiece('black', 'Knight'));
 
 square = document.querySelector('[data-square="G8"]');
-square.appendChild(createPiece('black', 'Bishop'));
+square.appendChild(createPiece('black', 'Knight'));
 
 //Black Bishops
 square = document.querySelector('[data-square="C8"]');
 square.appendChild(createPiece('black', 'Bishop'));
 
 square = document.querySelector('[data-square="F8"]');
-square.appendChild(createPiece('black', 'Knight'));
+square.appendChild(createPiece('black', 'Bishop'));
 
 //Black King
 square = document.querySelector('[data-square="D8"]');
@@ -58,14 +58,14 @@ square = document.querySelector('[data-square="B1"]');
 square.appendChild(createPiece('white', 'Knight'));
 
 square = document.querySelector('[data-square="G1"]');
-square.appendChild(createPiece('white', 'Bishop'));
+square.appendChild(createPiece('white', 'Knight'));
 
 //White Bishops
 square = document.querySelector('[data-square="C1"]');
 square.appendChild(createPiece('white', 'Bishop'));
 
 square = document.querySelector('[data-square="F1"]');
-square.appendChild(createPiece('white', 'Knight'));
+square.appendChild(createPiece('white', 'Bishop'));
 
 //White King
 square = document.querySelector('[data-square="D1"]');

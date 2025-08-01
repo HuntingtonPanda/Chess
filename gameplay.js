@@ -77,7 +77,10 @@ function possibleMoveCalc(rank, file){
 
   const pieceType = piece[1];
 
-  PIECESMOVE[pieceType](rank, file);
+  //PIECESMOVE[pieceType](rank, file);
+  const moveFn = PIECESMOVE[pieceType];
+  if (moveFn) 
+    moveFn(rank, file);
 }
 
 let selectedPiece = null;
