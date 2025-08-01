@@ -54,6 +54,19 @@ function possibleRookMove(rank, file){
   deltaRookMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
 }
 
+function possibleKnightMove(rank, file){
+  const continuous = false;
+  const deltaKnightMove = [[2, 1], [2, -1], [-2, 1], [-2, -1],
+                     [1, 2], [1, -2], [-1, 2], [-1, -2]];
+
+  deltaKnightMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+}
+
+const PIECESMOVE = {
+  'R': possibleRookMove,
+  'N': possibleKnightMove
+}
+
 function possibleMoveCalc(rank, file){
   while(possibleMoves.length > 0){
     possibleMoves.pop().classList.remove('possibleMove');
@@ -64,16 +77,7 @@ function possibleMoveCalc(rank, file){
 
   const pieceType = piece[1];
 
-  // Rook
-  if (pieceType === 'R') {
-    console.log("rook selected");
-    // let target = document.querySelector('[data-square=H3]');
-    // if (target) {
-    //   target.classList.add("possibleMove");
-    //   possibleMoves.push(target);
-    // }
-    possibleRookMove(rank, file);
-  }
+  PIECESMOVE[pieceType](rank, file);
 }
 
 let selectedPiece = null;
