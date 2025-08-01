@@ -2,8 +2,8 @@ const boardRankSize = 8;
 const boardFileSize = 8;
 const board = [
   ['bR', 'bN', 'bB', 'bK', 'bQ', 'bB', 'bN', 'bR'],  // row 0 (rank 8)
-  //['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
-  [null, null, null, null, null, null, null, null],
+  ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
+  //[null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
@@ -81,11 +81,23 @@ function possibleKingMove(rank, file){
   deltaKingMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
 }
 
+function possibleQueenMove(rank, file){
+  const continuous = true;
+  const deltaQueenMove = [
+    [-1, -1], [0, -1], [1, -1],
+    [-1, 0], [1, 0],
+    [-1, 1], [0, 1], [1, 1]
+  ];
+
+  deltaQueenMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+}
+
 const PIECESMOVE = {
   'R': possibleRookMove,
   'N': possibleKnightMove,
   'B': possibleBishopMove,
-  'K': possibleKingMove 
+  'K': possibleKingMove,
+  'Q': possibleQueenMove 
 }
 
 function possibleMoveCalc(rank, file){
