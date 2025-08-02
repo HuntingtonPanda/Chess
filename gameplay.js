@@ -1,17 +1,18 @@
-const boardRankSize = 8;
-const boardFileSize = 8;
+import { PIECE_INDEX, BOARD_SIZE, MOVED, NOT_MOVED } from './constants.js';
 const board = [
-  ['bR', 'bN', 'bB', 'bK', 'bQ', 'bB', 'bN', 'bR'],  // row 0 (rank 8)
-  ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
+  ['bR-', 'bN', 'bB', 'bK-', 'bQ', 'bB', 'bN', 'bR-'],  // row 0 (rank 8)
+  ['bP-', 'bP-', 'bP-', 'bP-', 'bP-', 'bP-', 'bP-', 'bP-'],
   //[null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
-  ['wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP'],
-  ['wR', 'wN', 'wB', 'wK', 'wQ', 'wB', 'wN', 'wR']
+  ['wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP+'],
+  ['wR-', 'wN', 'wB', 'wK-', 'wQ', 'wB', 'wN', 'wR-']
 ];
 
+
+// Helper Functions 
 function algebraicToIndex(squareName) {
   const file = squareName.charCodeAt(0) - 65;
   const rank = 8 - parseInt(squareName[1]);
@@ -34,7 +35,8 @@ function deltaMove(rank, file, deltaRank, deltaFile, continuous){
     r += deltaRank;
     f += deltaFile;
     
-    if(r < 0 || r >= boardRankSize || f < 0 || f >= boardFileSize) //within border of board
+    // Contain within board
+    if(r < 0 || r >= BOARD_SIZE.RANK || f < 0 || f >= BOARD_SIZE.FILE) 
       break;
     
     const target = document.querySelector(`[data-square="${indexToAlgebraic(r, f)}"]`);
@@ -44,7 +46,8 @@ function deltaMove(rank, file, deltaRank, deltaFile, continuous){
       possibleMoves.push(target);
     }
 
-    if (board[r][f]) break; //Stop if piece something intercepting its path
+    //Stop if something is intercepting piece's path
+    if (board[r][f]) break; 
   }while(continuous)
 }
 
@@ -92,12 +95,33 @@ function possibleQueenMove(rank, file){
   deltaQueenMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
 }
 
+function possiblePawnMove(rank, file){
+  const continuous = false;
+  let deltaPawnMove = [];
+
+  const piece = board[rank][file];
+  if (piece[PIECE_INDEX.COLOR] === 'w'){
+    deltaPawnMove = piece[PIECE_INDEX.MOVED] === NOT_MOVED
+      ? [[-1, 0], [-2, 0]]
+      : [[-1, 0]];
+  }else{
+    deltaPawnMove = piece[PIECE_INDEX.MOVED] === NOT_MOVED
+      ? [[1, 0], [2, 0]]
+      : [[1, 0]];
+  }
+
+  deltaPawnMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+}
+
+// -------------------------------------------------
+
 const PIECESMOVE = {
   'R': possibleRookMove,
   'N': possibleKnightMove,
   'B': possibleBishopMove,
   'K': possibleKingMove,
-  'Q': possibleQueenMove 
+  'Q': possibleQueenMove,
+  'P': possiblePawnMove 
 }
 
 function possibleMoveCalc(rank, file){
@@ -108,7 +132,7 @@ function possibleMoveCalc(rank, file){
   if (!piece)
     return;
 
-  const pieceType = piece[1];
+  const pieceType = piece[PIECE_INDEX.TYPE];
 
   //PIECESMOVE[pieceType](rank, file);
   const moveFn = PIECESMOVE[pieceType];
