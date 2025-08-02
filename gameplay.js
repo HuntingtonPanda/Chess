@@ -151,6 +151,7 @@ function selectPiece(square){
     while(possibleMoves.length > 0){
       possibleMoves.pop().classList.remove('possibleMove');
     }
+    selectedPiece = null;
     return;
   }
 
