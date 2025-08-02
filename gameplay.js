@@ -26,6 +26,7 @@ function indexToAlgebraic(row, col) {
 }
 
 /* -------------- HANDLING MOVES HERE ------------*/
+//let pieceSelected = null;
 let possibleMoves = [];
 
 function deltaMove(rank, file, deltaRank, deltaFile, continuous, color){
@@ -145,6 +146,14 @@ function possibleMoveCalc(rank, file){
 
 let selectedPiece = null;
 function selectPiece(square){
+  if(selectedPiece === square){
+    selectedPiece.classList.remove('selectedPiece');
+    while(possibleMoves.length > 0){
+      possibleMoves.pop().classList.remove('possibleMove');
+    }
+    return;
+  }
+
   if(selectedPiece)
     selectedPiece.classList.remove('selectedPiece');
 
