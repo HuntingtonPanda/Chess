@@ -7,7 +7,7 @@ const board = [
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
-  ['wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP+'],
+  ['wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP-', 'wP-'],
   ['wR-', 'wN', 'wB', 'wK-', 'wQ', 'wB', 'wN', 'wR-']
 ];
 
@@ -28,7 +28,7 @@ function indexToAlgebraic(row, col) {
 /* -------------- HANDLING MOVES HERE ------------*/
 let possibleMoves = [];
 
-function deltaMove(rank, file, deltaRank, deltaFile, continuous){
+function deltaMove(rank, file, deltaRank, deltaFile, continuous, color){
   let r = rank;
   let f = file;
   do{
@@ -40,40 +40,41 @@ function deltaMove(rank, file, deltaRank, deltaFile, continuous){
       break;
     
     const target = document.querySelector(`[data-square="${indexToAlgebraic(r, f)}"]`);
+    const targetPiece = board[r][f];
     
-    if (target) {
+    if (target && (!targetPiece || targetPiece[PIECE_INDEX.COLOR] !== color)) {
       target.classList.add('possibleMove');
       possibleMoves.push(target);
     }
 
     //Stop if something is intercepting piece's path
-    if (board[r][f]) break; 
+    if (targetPiece) break; 
   }while(continuous)
 }
 
-function possibleRookMove(rank, file){
+function possibleRookMove(rank, file, color){
   const continuous = true;
   const deltaRookMove = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 
-  deltaRookMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+  deltaRookMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous, color)});
 }
 
-function possibleKnightMove(rank, file){
+function possibleKnightMove(rank, file, color){
   const continuous = false;
   const deltaKnightMove = [[2, 1], [2, -1], [-2, 1], [-2, -1],
                      [1, 2], [1, -2], [-1, 2], [-1, -2]];
 
-  deltaKnightMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+  deltaKnightMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous, color)});
 }
 
-function possibleBishopMove(rank, file){
+function possibleBishopMove(rank, file, color){
   const continuous = true;
   const deltaBishopMove = [[1, 1], [1, -1], [-1, -1], [-1, 1]];
 
-  deltaBishopMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+  deltaBishopMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous, color)});
 }
 
-function possibleKingMove(rank, file){
+function possibleKingMove(rank, file, color){
   const continuous = false;
   const deltaKingMove = [
     [-1, -1], [0, -1], [1, -1],
@@ -81,10 +82,10 @@ function possibleKingMove(rank, file){
     [-1, 1], [0, 1], [1, 1]
   ];
 
-  deltaKingMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+  deltaKingMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous, color)});
 }
 
-function possibleQueenMove(rank, file){
+function possibleQueenMove(rank, file, color){
   const continuous = true;
   const deltaQueenMove = [
     [-1, -1], [0, -1], [1, -1],
@@ -92,10 +93,10 @@ function possibleQueenMove(rank, file){
     [-1, 1], [0, 1], [1, 1]
   ];
 
-  deltaQueenMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+  deltaQueenMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous, color)});
 }
 
-function possiblePawnMove(rank, file){
+function possiblePawnMove(rank, file, color){
   const continuous = false;
   let deltaPawnMove = [];
 
@@ -110,7 +111,7 @@ function possiblePawnMove(rank, file){
       : [[1, 0]];
   }
 
-  deltaPawnMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous)});
+  deltaPawnMove.forEach(([dr, df]) => {deltaMove(rank, file, dr, df, continuous, color)});
 }
 
 // -------------------------------------------------
@@ -125,6 +126,7 @@ const PIECESMOVE = {
 }
 
 function possibleMoveCalc(rank, file){
+  // Clear possibleMove list
   while(possibleMoves.length > 0){
     possibleMoves.pop().classList.remove('possibleMove');
   }
@@ -133,11 +135,12 @@ function possibleMoveCalc(rank, file){
     return;
 
   const pieceType = piece[PIECE_INDEX.TYPE];
+  const pieceColor = piece[PIECE_INDEX.COLOR];
 
   //PIECESMOVE[pieceType](rank, file);
   const moveFn = PIECESMOVE[pieceType];
   if (moveFn) 
-    moveFn(rank, file);
+    moveFn(rank, file, pieceColor);
 }
 
 let selectedPiece = null;
